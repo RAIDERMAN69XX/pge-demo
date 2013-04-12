@@ -1,0 +1,103 @@
+body,html{
+  height:100%;
+}
+
+.container{
+	height: 100%;
+	width: 100%;
+	background-color: white;
+}
+
+.container canvas{
+	margin: auto;
+	padding-left: 30%;
+	padding-top: 2%;
+}
+
+.container input[type=text]{
+	text-align: left;
+	font-size: 60px;
+}
+
+.title{
+	width: 100%;
+	padding-top: 1%;
+	padding-bottom: 5px;
+	margin: auto;
+}
+
+.dial{
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.kwh{
+	position: relative;
+	vertical-align: middle; 
+	margin-left: -122px; 
+	border: 0px; 
+	background-image: none; 
+	font-weight: bold; 
+	font-style: normal; 
+	font-variant: normal; 
+	font-size: 50pt; 
+	line-height: normal; 
+	font-family: Arial;
+	color: rgba(0, 255, 0, 0.701961); 
+	padding: 0px; 
+	background-color: transparent;
+}
+
+.consumption{
+	background: url("../images/curr_consumption.png");
+	background-size: cover;
+	height: 150px;
+	width: 350px;
+	display: block;
+	margin: auto;
+}
+
+.house{
+	display: inline-block;
+	background: url("../images/house.jpeg");
+	height: 120px;
+	width: 120px;
+	background-size: contain;
+	float: left;
+	margin-right: 8px;
+}
+
+#address{
+	display: inline-block;
+	font-size: 60pt;
+	margin-top: 15pt;
+}
+
+#headerLabel{
+	display: block;
+	padding-top: 5px;
+	margin-left: 12%;
+	font-size: 34pt;
+}
+
+.data{
+	width: 100%;
+	position: fixed;
+	bottom: 10px;
+}
+.estimated_output{
+	display: inline-block;
+	background: url("../images/estimated_output.png");
+	height: 350px;
+	width: 410px;
+	background-size: contain;
+}
+
+.pgelogo{
+	display: inline-block;
+	background: url("../images/PGE_logo.png");
+	height: 330px;
+	width: 410px;
+	background-size: contain;
+	float: right;
+}

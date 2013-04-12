@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Energy Usage</title>
+    <link href="layout.css" rel="stylesheet" type="text/css">
+    <script language="javascript" type="text/javascript" src="../scripts/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../scripts/jquery.flot.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../scripts/jquery.flot.time.js"></script>
+ </head>
+    <body>
+    <h1>Energy Usage</h1>
+
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+
+<script type="text/javascript">
+$(function () {
+    // we use an inline data source in the example, usually data would
+    // be fetched from a server
+    var data = [13, 45, 23, 56, 43, 76, 35, 20, 34, 12, 80];
+
+    function readData() {
+
+        // zip the generated y values with the x values
+        var res = [];
+        for (var i = 0; i < data.length; ++i)
+            res.push([i, data[i]])
+
+        //Circulate the data through the array
+        firstPoint = data[0];
+        data = data.slice(1);
+        data.push(firstPoint);
+
+        return res;
+    }
+
+    // setup control widgett
+    var updateInterval = 2000;
+    
+    // setup plot
+    var options = {
+        series: { shadowSize: 0 }, // drawing is faster without shadows
+        yaxis: { min: 0 },
+        xaxis: { show: true, mode: "time", minTickSize: [1, "hour"], timeformat: "%H:%M:%S", axisLabel: "Time" },
+        colors: ["#006ed4"]
+    };
+    var plot = $.plot($("#placeholder"), [ readData() ], options);
+
+    function update() {
+
+        plot.setData([ readData() ]);
+        // since the axes don't change, we don't need to call plot.setupGrid()
+        plot.draw();
+        
+        setTimeout(update, updateInterval);
+    }
+
+    update();
+});
+</script>
+
+ </body>
+</html>
