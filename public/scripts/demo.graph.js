@@ -93,8 +93,8 @@ $(function() {
   });
 */
   var container = $("#placeholder");
-  $("#placeholder").width($(window).width() * 0.9);
-  $("#placeholder").height($(window).height() * 0.8);
+  //$("#placeholder").width($(window).width() * 0.9);
+  //$("#placeholder").height($(window).height() * 0.8);
 
   // Determine how many data points to keep based on the placeholder's initial size;
   // this gives us a nice high-res plot while avoiding more than one point per pixel.
