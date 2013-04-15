@@ -174,7 +174,7 @@ $(function() {
 
   // Create the demo X and Y axis labels
 
-  var yaxisLabel = $("<div class='axisLabel yaxisLabel' style='font-weight: bold'></div>")
+  var yaxisLabel = $("<div class='axisLabel yaxisLabel' style='font-weight: bold; position: relative; left: -25px; top: 125px'></div>")
     .text("Energy Usage (kWh)")
     .appendTo(container);
 
@@ -190,5 +190,5 @@ $(function() {
     series[0].data = getRandomData();
     plot.setData(series);
     plot.draw();
-  }, 40);
+  }, 2500);
 });
