@@ -77,8 +77,11 @@ body {
 
     <div class="row-fluid">
       <div class="span12 text-center">
+        <canvas id="usage-gauge"></canvas>
+        <!--
         <input type="text" class="dial" value="54" />
         <h4>kWh</h4>
+        -->
       </div>
     </div>
 
@@ -123,8 +126,9 @@ body {
 <!-- <script src="scripts/bootstrap-tooltip.js"></script> -->
   <script src="scripts/jquery.flot.min.js"></script>
   <script src="scripts/jquery.flot.time.js"></script>
-  <script src="scripts/jquery.knob.js"></script>
-  <script src="scripts/flashcanvas.js"></script>
+  <script src="scripts/gauge.min.js"></script>
+<!--  <script src="scripts/jquery.knob.js"></script>
+  <script src="scripts/flashcanvas.js"></script>-->
   <script src="scripts/demo.main.js"></script>
   <script src="scripts/demo.graph.js"></script>
 
@@ -142,6 +146,7 @@ body {
             break; 
           }
       }, false);
+      
     });
   </script>
 </body>
