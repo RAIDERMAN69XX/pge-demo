@@ -154,6 +154,8 @@ body {
           $('#placeholder').hide();
           $('#main').show();
         } else {
+          $("#placeholder").width($(window).width() * 0.9);
+          $("#placeholder").height($(window).height() * 0.8);
           $('#main').hide();
           $('#placeholder').show();
         }
