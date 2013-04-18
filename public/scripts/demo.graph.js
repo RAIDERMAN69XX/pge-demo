@@ -9,7 +9,7 @@ var Graph = Graph || {};
   Graph.init = function () {
     var $container = $("#placeholder");
     $container.width($(window).width() * 0.9);
-    $container.height($(window).height() * 0.9);
+    $container.height($(window).height() * 0.8);
   
     maximum = $container.outerWidth() / 2 || 300;
   
