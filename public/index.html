@@ -155,6 +155,11 @@ body {
           $('#main').show();
         } else {
           $('#main').hide();
+          if (!Graph) {
+            alert('no graph!');
+          } else {
+            alert('there is a graph!');
+          }
           Graph.show();
           $('#placeholder').show();
         }
