@@ -1,43 +1,17 @@
 var Graph = Graph || {};
 
 (function (Graph, $, undefined) {
-  Graph.show = function () {
+  var plot,
+      data = [],
+      series = [],
+      maximum;
+  
+  Graph.init = function () {
     var container = $("#placeholder");
     $("#placeholder").width($(window).width() * 0.9);
     $("#placeholder").height($(window).height() * 0.8);
   
-    // Determine how many data points to keep based on the placeholder's initial size;
-    // this gives us a nice high-res plot while avoiding more than one point per pixel.
-  
-    var maximum = container.outerWidth() / 2 || 300;
-  
-    //
-  
-    var data = [];
-  
-      function getRandomData() {
-  
-          if (data.length) {
-              data = data.slice(1);
-          }
-  
-          while (data.length < maximum) {
-              var previous = data.length ? data[data.length - 1] : 50;
-              var y = previous + Math.random() * 10 - 5;
-              data.push(y < 0 ? 0 : y > 100 ? 100 : y);
-          }
-  
-          // zip the generated y values with the x values
-  
-          var res = [];
-          for (var i = 0; i < data.length; ++i) {
-              res.push([i, data[i]])
-          }
-  
-          return res;
-      }
-  
-    //
+    maximum = container.outerWidth() / 2 || 300;
   
     series = [{
       data: getRandomData(),
@@ -46,9 +20,7 @@ var Graph = Graph || {};
       }
     }];
   
-    //
-  
-    var plot = $.plot(container, series, {
+    plot = $.plot(container, series, {
       grid: {
         borderWidth: 1,
         minBorderMargin: 20,
@@ -97,11 +69,38 @@ var Graph = Graph || {};
     yaxisLabel.css("margin-top", yaxisLabel.width() / 2 - 20);
   
     // Update the random dataset at 25FPS for a smoothly-animating chart
+  }
   
+  Graph.show = function () {
+    if (!plot) {
+      Graph.init();
+    }
+    
     setInterval(function updateRandom() {
       series[0].data = getRandomData();
       plot.setData(series);
       plot.draw();
-    }, 2500);
+    }, 1500);
   }
+  
+  function getRandomData() {
+    if (data.length) {
+        data = data.slice(1);
+    }
+
+    while (data.length < maximum) {
+        var previous = data.length ? data[data.length - 1] : 50;
+        var y = previous + Math.random() * 10 - 5;
+        data.push(y < 0 ? 0 : y > 100 ? 100 : y);
+    }
+
+    // zip the generated y values with the x values
+    var res = [];
+    for (var i = 0; i < data.length; ++i) {
+        res.push([i, data[i]])
+    }
+
+    return res;
+}
+
 } (Graph, jQuery));

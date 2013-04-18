@@ -35,7 +35,7 @@
   usageGauge.onready = function() {
     setInterval( function() {
       usageGauge.setValue( Math.random() * 10);
-    }, 2500);
+    }, 1500);
   };
   
   usageGauge.draw();
