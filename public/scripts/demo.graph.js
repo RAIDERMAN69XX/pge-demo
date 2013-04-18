@@ -76,6 +76,7 @@ var Graph = Graph || {};
       Graph.init();
     }
     
+    alert('plot = ' + plot);
     setInterval(function updateRandom() {
       series[0].data = getRandomData();
       plot.setData(series);
