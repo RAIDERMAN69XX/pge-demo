@@ -140,6 +140,7 @@ body {
         switch(window.orientation) {
           case -90: case 90:
             $('#main').hide();
+            Graph.show();
             $('#placeholder').show();
             break;
           default:
@@ -155,11 +156,6 @@ body {
           $('#main').show();
         } else {
           $('#main').hide();
-          if (!Graph) {
-            alert('no graph!');
-          } else {
-            alert('there is a graph!');
-          }
           Graph.show();
           $('#placeholder').show();
         }
