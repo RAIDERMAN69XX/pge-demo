@@ -7,11 +7,11 @@ var Graph = Graph || {};
       maximum;
   
   Graph.init = function () {
-    var container = $("#placeholder");
-    $("#placeholder").width($(window).width() * 0.9);
-    $("#placeholder").height($(window).height() * 0.8);
+    var $container = $("#placeholder");
+    $container.width($(window).width() * 0.9);
+    $container.height($(window).height() * 0.7);
   
-    maximum = container.outerWidth() / 2 || 300;
+    maximum = $container.outerWidth() / 2 || 300;
   
     series = [{
       data: getRandomData(),
@@ -20,7 +20,7 @@ var Graph = Graph || {};
       }
     }];
   
-    plot = $.plot(container, series, {
+    plot = $.plot($container, series, {
       grid: {
         borderWidth: 1,
         minBorderMargin: 20,
@@ -60,7 +60,7 @@ var Graph = Graph || {};
   
     var yaxisLabel = $("<div class='axisLabel yaxisLabel' style='font-weight: bold; position: relative; left: -25px; top: 125px'></div>")
       .text("Energy Usage (kWh)")
-      .appendTo(container);
+      .appendTo($container);
   
     // Since CSS transforms use the top-left corner of the label as the transform origin,
     // we need to center the y-axis label by shifting it down by half its width.
