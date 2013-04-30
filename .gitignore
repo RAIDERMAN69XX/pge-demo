@@ -16,3 +16,6 @@
 
 # Ignore Aptana project directory.
 /.project
+
+# Ignore RubyMine project directory.
+/.idea
