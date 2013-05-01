@@ -33,9 +33,13 @@
   });
   
   usageGauge.onready = function() {
+    usageGauge.setValue(0);
     setInterval( function() {
-      usageGauge.setValue( Math.random() * 10);
-    }, 1500);
+        $.getJSON('meter_reading', function (result, status) {
+                kwh = result.items[0].xadAttributeIntegerValue/ 1000;
+                usageGauge.setValue( kwh );
+            })
+        }, 1500);
   };
   
   usageGauge.draw();
