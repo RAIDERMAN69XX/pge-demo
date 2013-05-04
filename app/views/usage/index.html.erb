@@ -105,47 +105,21 @@
 
 
   <script>
-    $(function() {
-      window.addEventListener("orientationchange", function() {
-        switch(window.orientation) {
-          case -90: case 90:
-            $('#main').hide();
-            Graph.show();
-            $('#placeholder').show();
-            break;
-          default:
-  	        $('#placeholder').hide();
-            $('#main').show();
-            break;
-          }
-      }, false);
 
-      $('body').dblclick(function() {
-        if ($('#main').is(':hidden')) {
-          $('#placeholder').hide();
-          $('#main').show();
-        } else {
-          $('#main').hide();
-          Graph.show();
-          $('#placeholder').show();
-        }
-      });
-
-    });
- /*
-    if (QueryString.page_view.toLowerCase() == 'meter') {
+    if (QueryString.page_view == 'meter') {
         $('#placeholder').hide();
         $('#main').show();
-    } else if (QueryString.page_view.toLowerCase() == 'graph') {
+    } else if (QueryString.page_view == 'graph') {
         $('#main').hide();
+        Graph.show();
         $('#placeholder').show();
     } else {
-
         $(function() {
             window.addEventListener("orientationchange", function() {
                 switch(window.orientation) {
                     case -90: case 90:
                     $('#main').hide();
+                    Graph.show();
                     $('#placeholder').show();
                     break;
                     default:
@@ -154,10 +128,21 @@
                         break;
                 }
             }, false);
+
+            $('body').dblclick(function() {
+                if ($('#main').is(':hidden')) {
+                    $('#placeholder').hide();
+                    $('#main').show();
+                } else {
+                    $('#main').hide();
+                    Graph.show();
+                    $('#placeholder').show();
+                }
+            });
+
         });
 
-    }
-*/
+     }
   </script>
 </body>
 </html>

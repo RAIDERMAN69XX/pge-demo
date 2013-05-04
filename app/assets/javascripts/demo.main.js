@@ -41,7 +41,7 @@ window.onload = function () {
     usageGauge.onready = function () {
         usageGauge.setValue(0);
         setInterval(function () {
-            $.getJSON('meter_reading', function (result, status) {
+            $.getJSON('/meter_reading', function (result, status) {
                 kwh = result.items[0].xadAttributeIntegerValue / 1000;
                 usageGauge.setValue(kwh);
             })
