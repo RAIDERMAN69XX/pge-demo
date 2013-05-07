@@ -1,5 +1,5 @@
 //= require jquery
-
+//= require jquery.flot.min
 
 var Graph = Graph || {};
 
