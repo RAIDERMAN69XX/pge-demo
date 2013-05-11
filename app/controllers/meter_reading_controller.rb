@@ -4,7 +4,7 @@ require 'uri'
 class MeterReadingController < ApplicationController
   def index
     # Nothing dynamic for now, just get the meter reading from Max's home...
-    url = URI.encode('http://my.idigi.com/ws/XbeeAttributeDataCore?condition=xeEndpointId= 1 and xcClusterType= 0 and xcClusterId= 1794 and xaAttributeId= 1024')
+    url = URI.encode('http://my.idigi.com/ws/XbeeAttributeDataFull?condition=xeEndpointId= 1 and xcClusterType= 0 and xcClusterId= 1794 and xaAttributeId= 1024')
     username = 'slalomdigital'
     password = 'Mogu2l4m!'
 
