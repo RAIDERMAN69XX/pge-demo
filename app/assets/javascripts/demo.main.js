@@ -48,7 +48,7 @@ window.onload = function () {
                 usageGauge.setValue(kwh);
             })
           */
-        }, 1500);
+        }, 5000);
     };
 
     usageGauge.draw();

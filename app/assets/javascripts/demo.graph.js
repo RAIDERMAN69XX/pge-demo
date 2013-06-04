@@ -85,7 +85,7 @@ var Graph = Graph || {};
             series[0].data = getRandomData();
             plot.setData(series);
             plot.draw();
-        }, 1500);
+        }, 5000);
     }
 
     function getRandomData() {
