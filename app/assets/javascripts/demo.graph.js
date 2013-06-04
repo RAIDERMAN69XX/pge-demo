@@ -54,7 +54,7 @@ var Graph = Graph || {};
             },
             yaxis: {
                 min: 0,
-                max: 110
+                max: 10
             },
             legend: {
                 show: true
@@ -94,9 +94,13 @@ var Graph = Graph || {};
         }
 
         while (data.length < maximum) {
-            var previous = data.length ? data[data.length - 1] : 50;
-            var y = previous + Math.random() * 10 - 5;
-            data.push(y < 0 ? 0 : y > 100 ? 100 : y);
+            var previous = data.length ? data[data.length - 1] : 5;
+            
+            //var rand = 0.5 + (Math.random() * 5.5);
+            //var y = previous + Math.random() - .5;
+            //data.push(y < 0 ? 0 : y > 5 ? rand : y);
+            
+            data.push(Util.getRandNumInRange(0.5, 5));
         }
 
         // zip the generated y values with the x values
