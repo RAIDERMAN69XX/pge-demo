@@ -1,0 +1,1 @@
+var QueryString=function(){for(var e={},r=window.location.search.substring(1),i=r.split("&"),n=0;i.length>n;n++){var t=i[n].split("=");if("undefined"==typeof e[t[0]])e[t[0]]=t[1];else if("string"==typeof e[t[0]]){var s=[e[t[0]],t[1]];e[t[0]]=s}else e[t[0]].push(t[1])}return e}();
