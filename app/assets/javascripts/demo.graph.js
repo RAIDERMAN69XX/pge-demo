@@ -56,19 +56,11 @@ var Graph = Graph || {};
         tickFormatter: function (val, axis) {
           var localeTime = new Date(val).toLocaleTimeString();
           var hms = localeTime.split(':');
-          var ampm;
 
-          if (hms[0] <= 12) {
-            if (hms[0] == 0) {
-              hms[0] = 12;
-            }
-            ampm = 'AM';
-          } else {
-            hms[0] = hms[0] - 12;
-            ampm = 'PM';
-          }
+          hms[0] = hms[0] == 0 ? 12 :
+            hms[0] <= 12 ? hms[0] : hms[0] - 12;
 
-          return hms.join(':') + ' ' + ampm;
+          return hms.join(':');
         },
         axisLabel: "Time",
         axisLabelUseCanvas: true,
