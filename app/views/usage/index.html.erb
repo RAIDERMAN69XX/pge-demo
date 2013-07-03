@@ -32,8 +32,8 @@
           </p>
           <ul class="nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about-modal" data-toggle="modal">About</a></li>
+            <li><a href="#contact-modal" data-toggle="modal">Contact</a></li>
           </ul>
         </div>
         <!--/.nav-collapse -->
@@ -95,10 +95,40 @@
 
   </div>
   <!-- /container -->
-  
+
+  <!-- hidden divs -->
+  <!-- about modal -->
+  <div id="about-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">About</h3>
+    </div>
+    <div class="modal-body">
+      <p>lorem ipsum dolor ...</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+  </div>
+
+  <!-- contact modal -->
+  <div id="contact-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Contact</h3>
+    </div>
+    <div class="modal-body">
+      <p>Slalom Digital</p>
+      <p>201 Spear St., #1550</p>
+      <p>San Francisco, CA</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+  </div>
+  <!-- /hidden divs -->
+
   <div id="placeholder" style="display:none"></div>
-
-
   <script>
 
     if (QueryString.page_view == 'meter') {

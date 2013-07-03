@@ -4,16 +4,17 @@ var Util = Util || {};
 
 (function (Util, $, undefined) {
   
-    var previous = 0,
+    var previous,
         counter = 0;
-        
+
     Util.getRandNumInRange = function (min, max) {
-      if (++counter % 2 != 0) {
-        var numInRange = min + (Math.random() * ((max - min) + 1));
+      //if (counter % 2 != 0) {
+        var numInRange = Math.random() * (max - min) + min;
+        previous = previous || numInRange;
         var newNum = previous + Math.random() - .5;
-        
-        previous = (newNum < 0 ? 0 : newNum > 5 ? numInRange : newNum);
-      }
+
+        previous = (newNum < min ? min : newNum > max ? numInRange : newNum);
+      //}
       
       return previous;
     }

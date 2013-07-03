@@ -1,115 +1,134 @@
 //= require jquery
 //= require jquery.flot.min
+//= require jquery.flot.axislabels
 
 var Graph = Graph || {};
 
 (function (Graph, $, undefined) {
-    var plot,
-        data = [],
-        series = [],
-        maximum;
+  var plot,
+    options = {},
+    data = [],
+    series = [],
+    maximum,
 
-    Graph.init = function () {
-        var $container = $("#placeholder");
-        $container.width($(window).width() * 0.9);
-        $container.height($(window).height() * 0.8);
+    $container;
 
-        maximum = $container.outerWidth() / 2 || 300;
+  Graph.init = function () {
+    $container = $("#placeholder");
+    $container.width($(window).width() * 0.9);
+    $container.height($(window).height() * 0.8);
 
-        series = [
-            {
-                data: getRandomData(),
-                lines: {
-                    fill: true
-                }
+    //maximum = $container.outerWidth() / 2 || 300;
+    maximum = 100;
+
+    series = [ {
+        data: getRandomData(),
+        lines: {
+          fill: true
+        }
+      } ];
+
+    options = {
+      grid: {
+        borderWidth: 1,
+        minBorderMargin: 20,
+        labelMargin: 10,
+        backgroundColor: {
+          colors: [ "#fff", "#fff" ]
+          //colors: [ "#fff", "#e4f4f4" ]
+        },
+        margin: {
+          top: 20,
+          bottom: 20,
+          left: 25,
+          right: 25
+        },
+        markings: function (axes) {
+          var markings = [];
+          var xaxis = axes.xaxis;
+          for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
+            markings.push({ xaxis: { from: x, to: x + xaxis.tickSize }, color: "rgba(232, 232, 255, 0.2)" });
+          }
+          return markings;
+        }
+      },
+      xaxis: {
+        tickFormatter: function (val, axis) {
+          var localeTime = new Date(val).toLocaleTimeString();
+          var hms = localeTime.split(':');
+          var ampm;
+
+          if (hms[0] <= 12) {
+            if (hms[0] == 0) {
+              hms[0] = 12;
             }
-        ];
+            ampm = 'AM';
+          } else {
+            hms[0] = hms[0] - 12;
+            ampm = 'PM';
+          }
 
-        plot = $.plot($container, series, {
-            grid: {
-                borderWidth: 1,
-                minBorderMargin: 20,
-                labelMargin: 10,
-                backgroundColor: {
-                    colors: ["#fff", "#e4f4f4"]
-                },
-                margin: {
-                    top: 8,
-                    bottom: 20,
-                    left: 20
-                },
-                markings: function (axes) {
-                    var markings = [];
-                    var xaxis = axes.xaxis;
-                    for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
-                        markings.push({ xaxis: { from: x, to: x + xaxis.tickSize }, color: "rgba(232, 232, 255, 0.2)" });
-                    }
-                    return markings;
-                }
-            },
-            xaxis: {
-                tickFormatter: function () {
-                    return "";
-                }
-            },
-            yaxis: {
-                min: 0,
-                max: 10
-            },
-            legend: {
-                show: true
-            }
-        });
+          return hms.join(':') + ' ' + ampm;
+        },
+        axisLabel: "Time",
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'Verdana, Arial',
+        axisLabelPadding: 5
+      },
+      yaxis: {
+        min: 0,
+        max: 10,
+        axisLabel: 'Energy usage in kW/H',
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'Verdana, Arial',
+        axisLabelPadding: 5
+      },
+      lines: {
+        show: true
+      },
+      points: {
+        show: true
+      },
+      legend: {
+        show: true
+      }
+    };
 
-        // Create the demo X and Y axis labels
+    plot = $.plot($container, series, options);
+  }
 
-        var yaxisLabel = $("<div class='axisLabel yaxisLabel' style='font-weight: bold; position: relative; left: -25px; top: 125px'></div>")
-            .text("Energy Usage (kWh)")
-            .appendTo($container);
-
-        // Since CSS transforms use the top-left corner of the label as the transform origin,
-        // we need to center the y-axis label by shifting it down by half its width.
-        // Subtract 20 to factor the chart's bottom margin into the centering.
-
-        yaxisLabel.css("margin-top", yaxisLabel.width() / 2 - 20);
-
-        // Update the random dataset at 25FPS for a smoothly-animating chart
+  Graph.show = function () {
+    if (!plot) {
+      Graph.init();
     }
 
-    Graph.show = function () {
-        if (!plot) {
-            Graph.init();
-        }
+    setInterval(function updateRandom() {
+      series[0].data = getRandomData();
+      $.plot($container, series, options);
+    }, 1000);
+  }
 
-        setInterval(function updateRandom() {
-            series[0].data = getRandomData();
-            plot.setData(series);
-            plot.draw();
-        }, 2500);
+  function getRandomData() {
+    if (data.length) {
+      data = data.slice(1);
     }
 
-    function getRandomData() {
-        if (data.length) {
-            data = data.slice(1);
-        }
-
-        while (data.length < maximum) {
-            var previous = data.length ? data[data.length - 1] : 5;
-            
-            //var rand = 0.5 + (Math.random() * 5.5);
-            //var y = previous + Math.random() - .5;
-            //data.push(y < 0 ? 0 : y > 5 ? rand : y);
-            
-            data.push(Util.getRandNumInRange(0.5, 5));
-        }
-
-        // zip the generated y values with the x values
-        var res = [];
-        for (var i = 0; i < data.length; ++i) {
-            res.push([i, data[i]])
-        }
-
-        return res;
+    while (data.length < maximum) {
+      data.push(Util.getRandNumInRange(1.5, 6.5));
     }
+
+    // zip the generated y values with the x values
+    var res = [];
+    var currentTime = new Date().getTime();
+    var startTime = currentTime - (data.length * 1000);
+    for (var i = 0; i < data.length; ++i) {
+      res.push([startTime, data[i]])
+      startTime += 1000;
+    }
+
+    return res;
+  }
 
 }(Graph, jQuery));
