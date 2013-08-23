@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  device_mac_id: 1
+  meter_mac_id: 1
+  meter_type: 1
+  nick_name: MyString
+  account: MyString
+  auth: MyString
+  host: MyString
+  enabled: false
+
+two:
+  device_mac_id: 1
+  meter_mac_id: 1
+  meter_type: 1
+  nick_name: MyString
+  account: MyString
+  auth: MyString
+  host: MyString
+  enabled: false

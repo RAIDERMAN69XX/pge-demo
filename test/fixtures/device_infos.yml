@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  device_mac_id: 1
+  install_code: 1
+  firmware_version: MyString
+  hardware_version: MyString
+  manufacturer: MyString
+  model_id: MyString
+  date_code: MyString
+
+two:
+  device_mac_id: 1
+  install_code: 1
+  firmware_version: MyString
+  hardware_version: MyString
+  manufacturer: MyString
+  model_id: MyString
+  date_code: MyString

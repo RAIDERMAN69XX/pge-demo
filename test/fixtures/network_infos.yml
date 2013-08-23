@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  device_mac_id: 1
+  coordinator_mac_id: 1
+  status: 1
+  description: MyString
+  status_code: 1
+  extended_pan_id: 1
+  channel: 1
+  short_address: 1
+  link_strength: 1
+
+two:
+  device_mac_id: 1
+  coordinator_mac_id: 1
+  status: 1
+  description: MyString
+  status_code: 1
+  extended_pan_id: 1
+  channel: 1
+  short_address: 1
+  link_strength: 1
