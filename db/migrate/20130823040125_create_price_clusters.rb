@@ -1,13 +1,13 @@
 class CreatePriceClusters < ActiveRecord::Migration
   def change
     create_table :price_clusters do |t|
-      t.integer :device_mac_id
-      t.integer :meter_mac_id
+      t.integer :device_mac_id, :limit => 16
+      t.integer :meter_mac_id, :limit => 16
       t.timestamp :timestamp
-      t.integer :price
-      t.integer :currency
-      t.integer :trailing_digits
-      t.integer :tier
+      t.integer :price, :limit => 16
+      t.integer :currency, :limit => 16
+      t.integer :trailing_digits, :limit => 16
+      t.integer :tier, :limit => 16
       t.string :rate_label
 
       t.timestamps

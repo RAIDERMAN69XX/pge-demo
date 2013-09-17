@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(:version => 20130823040850) do
   end
 
   create_table "device_infos", :force => true do |t|
-    t.integer  "device_mac_id"
-    t.integer  "install_code"
+    t.string   "device_mac_id"
+    t.string   "install_code"
     t.string   "firmware_version"
     t.string   "hardware_version"
     t.string   "manufacturer"
@@ -67,30 +67,30 @@ ActiveRecord::Schema.define(:version => 20130823040850) do
   end
 
   create_table "meter_infos", :force => true do |t|
-    t.integer  "device_mac_id"
-    t.integer  "meter_mac_id"
-    t.integer  "meter_type"
+    t.integer  "device_mac_id", :limit => 8
+    t.integer  "meter_mac_id",  :limit => 8
+    t.integer  "meter_type",    :limit => 8
     t.string   "nick_name"
     t.string   "account"
     t.string   "auth"
     t.string   "host"
     t.boolean  "enabled"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "network_infos", :force => true do |t|
-    t.integer  "device_mac_id"
-    t.integer  "coordinator_mac_id"
-    t.integer  "status"
+    t.string   "device_mac_id"
+    t.string   "meter_mac_id"
+    t.string   "status"
     t.string   "description"
     t.integer  "status_code"
-    t.integer  "extended_pan_id"
+    t.string   "extended_pan_id"
     t.integer  "channel"
-    t.integer  "short_address"
+    t.string   "short_address"
     t.integer  "link_strength"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "price_clusters", :force => true do |t|

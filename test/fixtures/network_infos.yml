@@ -2,8 +2,8 @@
 
 one:
   device_mac_id: 1
-  coordinator_mac_id: 1
-  status: 1
+  meter_mac_id: 1
+  status: MyString
   description: MyString
   status_code: 1
   extended_pan_id: 1
@@ -13,8 +13,8 @@ one:
 
 two:
   device_mac_id: 1
-  coordinator_mac_id: 1
-  status: 1
+  meter_mac_id: 1
+  status: MyString
   description: MyString
   status_code: 1
   extended_pan_id: 1
