@@ -132,5 +132,55 @@ class MeterReadingControllerTest < ActionController::TestCase
     assert_equal(100, networkInfo.link_strength)
   end
 
+  test "should create a valid Instantaneous Demand record when one is posted" do
+    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+<RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
+  <InstantaneousDemand>
+    <DeviceMacId>0x02</DeviceMacId>
+    <MeterMacId>0x03</MeterMacId>
+    <Demand>0x00000000000001</Demand>
+    <TimeStamp>0x19bb9510</TimeStamp>
+    <Multiplier>0x00000002</Multiplier>
+    <Divisor>0x000001</Divisor>
+    <DigitsRight>0x00000003</DigitsRight>
+    <DigitsLeft>0x00000004</DigitsLeft>
+    <SuppressLeadingZero>0x0001</SuppressLeadingZero>
+  </InstantaneousDemand>
+</RainForest>' }
+    assert_response :success
+
+    assert !InstantaneousDemand.find_all_by_device_mac_id("0x02").empty?
+    instantaneousDemand = InstantaneousDemand.find_all_by_device_mac_id("0x02").last
+
+    assert_equal("0x02", instantaneousDemand.device_mac_id)
+    assert_equal("0x03", instantaneousDemand.meter_mac_id)
+    assert_equal(1, instantaneousDemand.demand)
+    assert_equal(2, instantaneousDemand.multiplier)
+    assert_equal(1, instantaneousDemand.divisor)
+    assert_equal(3, instantaneousDemand.digits_right)
+    assert_equal(4, instantaneousDemand.digits_left)
+    assert_equal(true, instantaneousDemand.suppress_leading_zero)
+
+    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+<RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
+  <InstantaneousDemand>
+    <DeviceMacId>0x03</DeviceMacId>
+    <MeterMacId>0x03</MeterMacId>
+    <Demand>0x00000000000001</Demand>
+    <TimeStamp>0x19bb9510</TimeStamp>
+    <Multiplier>0x00000002</Multiplier>
+    <Divisor>0x000001</Divisor>
+    <DigitsRight>0x00000003</DigitsRight>
+    <DigitsLeft>0x00000004</DigitsLeft>
+    <SuppressLeadingZero>0x0000</SuppressLeadingZero>
+  </InstantaneousDemand>
+</RainForest>' }
+    assert_response :success
+    assert !InstantaneousDemand.find_all_by_device_mac_id("0x03").empty?
+    instantaneousDemand = InstantaneousDemand.find_all_by_device_mac_id("0x03").last
+
+    assert_equal(false, instantaneousDemand.suppress_leading_zero)
+
+  end
 
 end

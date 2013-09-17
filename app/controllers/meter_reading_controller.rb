@@ -89,6 +89,55 @@ class MeterReadingController < ApplicationController
                         :manufacturer => manufacturer, :model_id => model_id)
     end
 
+    # Check for InstantaneousDemand
+    instantaneousDemand = doc.xpath("//InstantaneousDemand")
+    if (!instantaneousDemand.blank?)
+      if !instantaneousDemand.xpath("//DeviceMacId").blank?
+        device_mac_id = instantaneousDemand.xpath("//DeviceMacId").first.content
+      end
+
+      if !instantaneousDemand.xpath("//MeterMacId").blank?
+        meter_mac_id = instantaneousDemand.xpath("//MeterMacId").first.content
+      end
+
+      if !instantaneousDemand.xpath("//Demand").blank?
+        demand = instantaneousDemand.xpath("//Demand").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//TimeStamp").blank?
+        timestamp = instantaneousDemand.xpath("//TimeStamp").first.content
+      end
+
+      if !instantaneousDemand.xpath("//Multiplier").blank?
+        multiplier = instantaneousDemand.xpath("//Multiplier").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//Divisor").blank?
+        divisor = instantaneousDemand.xpath("//Divisor").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//DigitsRight").blank?
+        digits_right = instantaneousDemand.xpath("//DigitsRight").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//DigitsLeft").blank?
+        digits_left = instantaneousDemand.xpath("//DigitsLeft").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//SuppressLeadingZero").blank?
+        if instantaneousDemand.xpath("//SuppressLeadingZero").first.content.to_i(base=16) != 0
+          suppress_leading_zero = true
+        else
+          suppress_leading_zero = false
+        end
+      end
+
+      InstantaneousDemand.create(:demand => demand, :device_mac_id => device_mac_id, :digits_left => digits_left,
+                                 :digits_right => digits_right, :divisor => divisor, :meter_mac_id => meter_mac_id,
+                                 :multiplier => multiplier, :suppress_leading_zero => suppress_leading_zero,
+                                 :timestamp => timestamp)
+    end
+
     render :nothing => true
   end
 

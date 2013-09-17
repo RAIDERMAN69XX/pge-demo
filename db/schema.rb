@@ -41,17 +41,18 @@ ActiveRecord::Schema.define(:version => 20130823040850) do
   end
 
   create_table "instantaneous_demands", :force => true do |t|
-    t.integer  "device_mac_id"
-    t.integer  "meter_mac_id"
+    t.string   "device_mac_id"
+    t.string   "meter_mac_id"
     t.datetime "timestamp"
     t.integer  "demand"
-    t.integer  "multiplier"
-    t.integer  "divisor"
-    t.integer  "digits_right"
-    t.integer  "digits_left"
+    t.integer  "8"
+    t.integer  "multiplier",            :limit => 8
+    t.integer  "divisor",               :limit => 8
+    t.integer  "digits_right",          :limit => 8
+    t.integer  "digits_left",           :limit => 8
     t.boolean  "suppress_leading_zero"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "messages", :force => true do |t|
@@ -94,16 +95,16 @@ ActiveRecord::Schema.define(:version => 20130823040850) do
   end
 
   create_table "price_clusters", :force => true do |t|
-    t.integer  "device_mac_id"
-    t.integer  "meter_mac_id"
+    t.string   "device_mac_id",   :limit => 16
+    t.string   "meter_mac_id",    :limit => 16
     t.datetime "timestamp"
-    t.integer  "price"
-    t.integer  "currency"
-    t.integer  "trailing_digits"
+    t.string   "price",           :limit => 16
+    t.string   "currency"
+    t.string   "trailing_digits"
     t.integer  "tier"
     t.string   "rate_label"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
 end
