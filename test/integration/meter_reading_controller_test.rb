@@ -183,4 +183,54 @@ class MeterReadingControllerTest < ActionController::TestCase
 
   end
 
+  test "should create a valid Current Summation record when one is posted" do
+    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+<RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
+  <CurrentSummation>
+    <DeviceMacId>0x2</DeviceMacId>
+    <MeterMacId>0x3</MeterMacId>
+    <SummationDelivered>0x0000000000000006</SummationDelivered>
+    <SummationReceived>0x0000000000000005</SummationReceived>
+    <Multiplier>0x00000003</Multiplier>
+    <Divisor>0x000003ef</Divisor>
+    <DigitsRight>0x00000003</DigitsRight>
+    <DigitsLeft>0x000000ff</DigitsLeft>
+    <SuppressLeadingZero>0x01</SuppressLeadingZero>
+  </CurrentSummation>
+</RainForest>' }
+    assert_response :success
+
+    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+<RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
+  <CurrentSummation>
+    <DeviceMacId>0x4</DeviceMacId>
+    <MeterMacId>0x3</MeterMacId>
+    <SummationDelivered>0x0000000000000006</SummationDelivered>
+    <SummationReceived>0x0000000000000005</SummationReceived>
+    <Multiplier>0x00000003</Multiplier>
+    <Divisor>0x000008</Divisor>
+    <DigitsRight>0x00000003</DigitsRight>
+    <DigitsLeft>0x000000f</DigitsLeft>
+    <SuppressLeadingZero>0x00</SuppressLeadingZero>
+  </CurrentSummation>
+</RainForest>' }
+    assert_response :success
+
+    assert !CurrentSummation.find_all_by_device_mac_id("0x2").empty?
+    currentSummation = CurrentSummation.find_all_by_device_mac_id("0x2").last
+
+    assert_equal("0x2", currentSummation.device_mac_id)
+    assert_equal("0x3", currentSummation.meter_mac_id)
+    assert_equal(6,currentSummation.summation_delivered)
+    assert_equal(5, currentSummation.summation_received)
+    assert_equal(1007, currentSummation.divisor)
+    assert_equal(3, currentSummation.digits_right)
+    assert_equal(255, currentSummation.digits_left)
+    assert_equal(true, currentSummation.suppress_leading_zero)
+
+    assert !CurrentSummation.find_all_by_device_mac_id("0x4").empty?
+    currentSummation = CurrentSummation.find_all_by_device_mac_id("0x4").last
+    assert_equal(false, currentSummation.suppress_leading_zero)
+  end
+
 end

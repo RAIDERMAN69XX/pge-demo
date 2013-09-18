@@ -14,18 +14,18 @@
 ActiveRecord::Schema.define(:version => 20130823040850) do
 
   create_table "current_summations", :force => true do |t|
-    t.integer  "device_mac_id"
-    t.integer  "meter_mac_id"
+    t.string   "device_mac_id"
+    t.string   "meter_mac_id"
     t.datetime "timestamp"
-    t.integer  "summation_delivered"
-    t.integer  "summation_received"
-    t.integer  "multiplier"
-    t.integer  "divisor"
-    t.integer  "digits_right"
-    t.integer  "digits_left"
+    t.integer  "summation_delivered",   :limit => 8
+    t.integer  "summation_received",    :limit => 8
+    t.integer  "multiplier",            :limit => 8
+    t.integer  "divisor",               :limit => 8
+    t.integer  "digits_right",          :limit => 8
+    t.integer  "digits_left",           :limit => 8
     t.boolean  "suppress_leading_zero"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "device_infos", :force => true do |t|

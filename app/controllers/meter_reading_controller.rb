@@ -138,6 +138,60 @@ class MeterReadingController < ApplicationController
                                  :timestamp => timestamp)
     end
 
+    # Check for CurrentSummation
+    currentSummation = doc.xpath("//CurrentSummation")
+    if (!currentSummation.blank?)
+      if !currentSummation.xpath("//DeviceMacId").blank?
+        device_mac_id = currentSummation.xpath("//DeviceMacId").first.content
+      end
+
+      if !currentSummation.xpath("//MeterMacId").blank?
+        meter_mac_id = currentSummation.xpath("//MeterMacId").first.content
+      end
+
+      if !currentSummation.xpath("//SummationDelivered").blank?
+        summation_delivered = currentSummation.xpath("//SummationDelivered").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//SummationReceived").blank?
+        summation_received = currentSummation.xpath("//SummationReceived").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//TimeStamp").blank?
+        timestamp = currentSummation.xpath("//TimeStamp").first.content
+      end
+
+      if !currentSummation.xpath("//Multiplier").blank?
+        multiplier = currentSummation.xpath("//Multiplier").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//Divisor").blank?
+        divisor = currentSummation.xpath("//Divisor").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//DigitsRight").blank?
+        digits_right = currentSummation.xpath("//DigitsRight").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//DigitsLeft").blank?
+        digits_left = currentSummation.xpath("//DigitsLeft").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//SuppressLeadingZero").blank?
+        if currentSummation.xpath("//SuppressLeadingZero").first.content.to_i(base=16) != 0
+          suppress_leading_zero = true
+        else
+          suppress_leading_zero = false
+        end
+      end
+
+      CurrentSummation.create(:device_mac_id => device_mac_id, :digits_left => digits_left,
+                              :digits_right => digits_right, :divisor => divisor, :meter_mac_id => meter_mac_id,
+                              :multiplier => multiplier, :summation_delivered => summation_delivered,
+                              :summation_received => summation_received, :suppress_leading_zero => suppress_leading_zero,
+                              :timestamp => timestamp)
+    end
+
     render :nothing => true
   end
 
