@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MeterReadingControllerTest < ActionController::TestCase
   test "should allow valid meter data to be posted" do
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <NetworkInfo>
     <DeviceMacId>0xd8d5b90000000c3b</DeviceMacId>
@@ -74,12 +74,13 @@ class MeterReadingControllerTest < ActionController::TestCase
     <Host></Host>
     <Enabled>0x00</Enabled>
   </MeterInfo>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
   end
 
   test "should create a valid DeviceInfo record when one is posted" do
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <DeviceInfo>
     <DeviceMacId>0x1</DeviceMacId>
@@ -92,7 +93,8 @@ class MeterReadingControllerTest < ActionController::TestCase
     <ModelId>RFA-Z109 EAGLE</ModelId>
     <DateCode>20121201EC051052</DateCode>
   </DeviceInfo>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
     assert !DeviceInfo.find_all_by_device_mac_id("0x1").empty?
     deviceInfo = DeviceInfo.find_all_by_device_mac_id("0x1").last
@@ -107,7 +109,7 @@ class MeterReadingControllerTest < ActionController::TestCase
   end
 
   test "should create a valid NetworkInfo record when one is posted" do
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <NetworkInfo>
     <DeviceMacId>0x2</DeviceMacId>
@@ -118,7 +120,8 @@ class MeterReadingControllerTest < ActionController::TestCase
     <Channel>25</Channel>
     <LinkStrength>100</LinkStrength>
   </NetworkInfo>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
     assert !NetworkInfo.find_all_by_device_mac_id("0x2").empty?
     networkInfo = NetworkInfo.find_all_by_device_mac_id("0x2").last
@@ -133,7 +136,7 @@ class MeterReadingControllerTest < ActionController::TestCase
   end
 
   test "should create a valid Instantaneous Demand record when one is posted" do
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <InstantaneousDemand>
     <DeviceMacId>0x02</DeviceMacId>
@@ -146,7 +149,8 @@ class MeterReadingControllerTest < ActionController::TestCase
     <DigitsLeft>0x00000004</DigitsLeft>
     <SuppressLeadingZero>0x0001</SuppressLeadingZero>
   </InstantaneousDemand>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
 
     assert !InstantaneousDemand.find_all_by_device_mac_id("0x02").empty?
@@ -161,7 +165,7 @@ class MeterReadingControllerTest < ActionController::TestCase
     assert_equal(4, instantaneousDemand.digits_left)
     assert_equal(true, instantaneousDemand.suppress_leading_zero)
 
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <InstantaneousDemand>
     <DeviceMacId>0x03</DeviceMacId>
@@ -174,7 +178,8 @@ class MeterReadingControllerTest < ActionController::TestCase
     <DigitsLeft>0x00000004</DigitsLeft>
     <SuppressLeadingZero>0x0000</SuppressLeadingZero>
   </InstantaneousDemand>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
     assert !InstantaneousDemand.find_all_by_device_mac_id("0x03").empty?
     instantaneousDemand = InstantaneousDemand.find_all_by_device_mac_id("0x03").last
@@ -184,7 +189,7 @@ class MeterReadingControllerTest < ActionController::TestCase
   end
 
   test "should create a valid Current Summation record when one is posted" do
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <CurrentSummation>
     <DeviceMacId>0x2</DeviceMacId>
@@ -197,10 +202,10 @@ class MeterReadingControllerTest < ActionController::TestCase
     <DigitsLeft>0x000000ff</DigitsLeft>
     <SuppressLeadingZero>0x01</SuppressLeadingZero>
   </CurrentSummation>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
-
-    post :index,  { :format => :xml, :body => '<?xml version="1.0"?>
+    @request.env["RAW_POST_DATA"] = '<?xml version="1.0"?>
 <RainForest macId="0xf0ad4e00ce69" timestamp="1355292588s">
   <CurrentSummation>
     <DeviceMacId>0x4</DeviceMacId>
@@ -213,7 +218,8 @@ class MeterReadingControllerTest < ActionController::TestCase
     <DigitsLeft>0x000000f</DigitsLeft>
     <SuppressLeadingZero>0x00</SuppressLeadingZero>
   </CurrentSummation>
-</RainForest>' }
+</RainForest>'
+    post :create,  { :format => :xml }
     assert_response :success
 
     assert !CurrentSummation.find_all_by_device_mac_id("0x2").empty?

@@ -3,9 +3,9 @@ require 'uri'
 require 'nokogiri'
 
 class MeterReadingController < ApplicationController
-  def index
+  def create
     # Parse the doc and if we are successful
-    doc = Nokogiri::XML(params['body'])
+    doc = Nokogiri::XML(request.body.string)
 
     # Check for NetworkInfo
     networkInfo = doc.xpath("//NetworkInfo")
