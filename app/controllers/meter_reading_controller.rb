@@ -1,28 +1,198 @@
 require 'net/https'
 require 'uri'
+require 'nokogiri'
 
 class MeterReadingController < ApplicationController
-  def index
-    # Nothing dynamic for now, just get the meter reading from Max's home...
-    url = URI.encode('http://my.idigi.com/ws/XbeeAttributeDataFull?condition=xeEndpointId= 1 and xcClusterType= 0 and xcClusterId= 1794 and xaAttributeId= 1024')
-    username = 'slalomdigital'
-    password = 'Mogu2l4m!'
+  def create
+    # Parse the doc and if we are successful
+    doc = Nokogiri::XML(request.body.string)
 
-    uri = URI.parse(url)
+    # Check for NetworkInfo
+    networkInfo = doc.xpath("//NetworkInfo")
+    if (!networkInfo.blank?)
+      if !networkInfo.xpath("//Channel").blank?
+        channel = networkInfo.xpath("//Channel").first.content
+      end
 
-    http = Net::HTTP.new(uri.host, uri.port)
-    # I was going to use HTTPS, but it's F__king way to complicated to do it right.
-    #http.use_ssl = true
-    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      if !networkInfo.xpath("//MeterMacId").blank?
+        meter_mac_id = networkInfo.xpath("//MeterMacId").first.content
+      end
 
-    request = Net::HTTP::Get.new(uri.request_uri)
-    request.basic_auth(username, password)
-    request['Accept'] = 'application/json'
-    response = http.request(request)
+      if !networkInfo.xpath("//Description").blank?
+        description = networkInfo.xpath("//Description").first.content
+      end
 
-    respond_to do |format|
-      format.json { render json: response.body }
+      if !networkInfo.xpath("//DeviceMacId").blank?
+        device_mac_id = networkInfo.xpath("//DeviceMacId").first.content
+      end
+
+      if !networkInfo.xpath("//ExtPanId").blank?
+        extended_pan_id = networkInfo.xpath("//ExtPanId").first.content
+      end
+
+      if !networkInfo.xpath("//LinkStrength").blank?
+        link_strength = networkInfo.xpath("//LinkStrength").first.content
+      end
+
+      if !networkInfo.xpath("//ShortAddr").blank?
+        short_address = networkInfo.xpath("//ShortAddr").first.content
+      end
+
+      if !networkInfo.xpath("//Status").blank?
+        status = networkInfo.xpath("//Status").first.content
+      end
+
+      if !networkInfo.xpath("//StatusCode").blank?
+        status_code = networkInfo.xpath("//StatusCode").first.content
+      end
+
+      NetworkInfo.create(:channel => channel, :meter_mac_id => meter_mac_id, :description => description,
+                         :device_mac_id => device_mac_id, :extended_pan_id => extended_pan_id,
+                         :link_strength => link_strength, :short_address => short_address, :status => status,
+                         :status_code => status_code)
     end
+
+
+    # Check for DeviceInfo
+    deviceInfo = doc.xpath("//DeviceInfo")
+    if (!deviceInfo.blank?)
+      if !deviceInfo.xpath("//DeviceMacId").blank?
+        device_mac_id = deviceInfo.xpath("//DeviceMacId").first.content
+      end
+
+      if !deviceInfo.xpath("//InstallCode").blank?
+        install_code = deviceInfo.xpath("//InstallCode").first.content
+      end
+
+      if !deviceInfo.xpath("//FWVersion").blank?
+        firmware_version = deviceInfo.xpath("//FWVersion").first.content
+      end
+
+      if !deviceInfo.xpath("//HWVersion").blank?
+        hardware_version = deviceInfo.xpath("//HWVersion").first.content
+      end
+
+      if !deviceInfo.xpath("//Manufacturer").blank?
+        manufacturer = deviceInfo.xpath("//Manufacturer").first.content
+      end
+
+      if !deviceInfo.xpath("//ModelId").blank?
+        model_id = deviceInfo.xpath("//ModelId").first.content
+      end
+
+      if !deviceInfo.xpath("//DateCode").blank?
+        date_code = deviceInfo.xpath("//DateCode").first.content
+      end
+
+      DeviceInfo.create(:date_code => date_code, :device_mac_id => device_mac_id, :firmware_version => firmware_version,
+                        :hardware_version => hardware_version, :install_code => install_code,
+                        :manufacturer => manufacturer, :model_id => model_id)
+    end
+
+    # Check for InstantaneousDemand
+    instantaneousDemand = doc.xpath("//InstantaneousDemand")
+    if (!instantaneousDemand.blank?)
+      if !instantaneousDemand.xpath("//DeviceMacId").blank?
+        device_mac_id = instantaneousDemand.xpath("//DeviceMacId").first.content
+      end
+
+      if !instantaneousDemand.xpath("//MeterMacId").blank?
+        meter_mac_id = instantaneousDemand.xpath("//MeterMacId").first.content
+      end
+
+      if !instantaneousDemand.xpath("//Demand").blank?
+        demand = instantaneousDemand.xpath("//Demand").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//TimeStamp").blank?
+        timestamp = instantaneousDemand.xpath("//TimeStamp").first.content
+      end
+
+      if !instantaneousDemand.xpath("//Multiplier").blank?
+        multiplier = instantaneousDemand.xpath("//Multiplier").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//Divisor").blank?
+        divisor = instantaneousDemand.xpath("//Divisor").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//DigitsRight").blank?
+        digits_right = instantaneousDemand.xpath("//DigitsRight").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//DigitsLeft").blank?
+        digits_left = instantaneousDemand.xpath("//DigitsLeft").first.content.to_i(base=16)
+      end
+
+      if !instantaneousDemand.xpath("//SuppressLeadingZero").blank?
+        if instantaneousDemand.xpath("//SuppressLeadingZero").first.content.to_i(base=16) != 0
+          suppress_leading_zero = true
+        else
+          suppress_leading_zero = false
+        end
+      end
+
+      InstantaneousDemand.create(:demand => demand, :device_mac_id => device_mac_id, :digits_left => digits_left,
+                                 :digits_right => digits_right, :divisor => divisor, :meter_mac_id => meter_mac_id,
+                                 :multiplier => multiplier, :suppress_leading_zero => suppress_leading_zero,
+                                 :timestamp => timestamp)
+    end
+
+    # Check for CurrentSummation
+    currentSummation = doc.xpath("//CurrentSummation")
+    if (!currentSummation.blank?)
+      if !currentSummation.xpath("//DeviceMacId").blank?
+        device_mac_id = currentSummation.xpath("//DeviceMacId").first.content
+      end
+
+      if !currentSummation.xpath("//MeterMacId").blank?
+        meter_mac_id = currentSummation.xpath("//MeterMacId").first.content
+      end
+
+      if !currentSummation.xpath("//SummationDelivered").blank?
+        summation_delivered = currentSummation.xpath("//SummationDelivered").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//SummationReceived").blank?
+        summation_received = currentSummation.xpath("//SummationReceived").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//TimeStamp").blank?
+        timestamp = currentSummation.xpath("//TimeStamp").first.content
+      end
+
+      if !currentSummation.xpath("//Multiplier").blank?
+        multiplier = currentSummation.xpath("//Multiplier").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//Divisor").blank?
+        divisor = currentSummation.xpath("//Divisor").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//DigitsRight").blank?
+        digits_right = currentSummation.xpath("//DigitsRight").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//DigitsLeft").blank?
+        digits_left = currentSummation.xpath("//DigitsLeft").first.content.to_i(base=16)
+      end
+
+      if !currentSummation.xpath("//SuppressLeadingZero").blank?
+        if currentSummation.xpath("//SuppressLeadingZero").first.content.to_i(base=16) != 0
+          suppress_leading_zero = true
+        else
+          suppress_leading_zero = false
+        end
+      end
+
+      CurrentSummation.create(:device_mac_id => device_mac_id, :digits_left => digits_left,
+                              :digits_right => digits_right, :divisor => divisor, :meter_mac_id => meter_mac_id,
+                              :multiplier => multiplier, :summation_delivered => summation_delivered,
+                              :summation_received => summation_received, :suppress_leading_zero => suppress_leading_zero,
+                              :timestamp => timestamp)
+    end
+
+    render :nothing => true
   end
 
 end

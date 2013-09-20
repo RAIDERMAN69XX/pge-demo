@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  device_mac_id: 1
+  meter_mac_id: 1
+  timestamp: 2013-08-22 21:06:34
+  summation_delivered: 1
+  summation_received: 1
+  multiplier: 1
+  divisor: 1
+  digits_right: 1
+  digits_left: 1
+  suppress_leading_zero: false
+
+two:
+  device_mac_id: 1
+  meter_mac_id: 1
+  timestamp: 2013-08-22 21:06:34
+  summation_delivered: 1
+  summation_received: 1
+  multiplier: 1
+  divisor: 1
+  digits_right: 1
+  digits_left: 1
+  suppress_leading_zero: false

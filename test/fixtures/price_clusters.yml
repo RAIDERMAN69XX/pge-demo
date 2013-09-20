@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  device_mac_id: 1
+  meter_mac_id: 1
+  timestamp: 2013-08-22 21:01:25
+  price: 1
+  currency: 1
+  trailing_digits: 1
+  tier: 1
+  rate_label: MyString
+
+two:
+  device_mac_id: 1
+  meter_mac_id: 1
+  timestamp: 2013-08-22 21:01:25
+  price: 1
+  currency: 1
+  trailing_digits: 1
+  tier: 1
+  rate_label: MyString
